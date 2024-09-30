@@ -23,11 +23,33 @@ class Neo4jController extends AbstractController
             ->withDefaultDriver('bolt')
             ->build();
 
-        //$result = $client->writeTransaction(static function (TransactionInterface $tsx) {
-        //    $result = $tsx->run('MATCH (x) RETURN x');
-        //    $records = $result->getRecords();
-        //     return $records;
-        //});
+            $result = $client->writeTransaction(static function (TransactionInterface $tsx) {
+                // Run your query
+                $result = $tsx->run('MATCH (x) RETURN x');
+                $nodesData = [];
+                // Iterate over each record in the result
+                foreach ($result as $record) {
+                    // Get the node 'x'
+                    $node = $record->get('x');
+                    // Access node labels using getLabels()
+                    $labels = $node->getLabels()->toArray();
+                    // Get node properties (CypherMap)
+                    $properties = $node->getProperties()->toArray();
+                    // Collect the node data
+                    $nodesData[] = [
+                        'id' => $node->getId(),
+                        'labels' => $labels,
+                        'properties' => $properties,
+                        'elementId' => $node->getElementId(),
+                    ];
+                }
+            dd($nodesData);
+                return $nodesData;
+            });
+            
+           
+            
+            
 
         return $this->render('neo4j/index.html.twig', [
             'controller_name' => 'Neo4jController',
