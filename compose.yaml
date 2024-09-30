@@ -44,7 +44,7 @@ services:
     image: neo4j:5.12
     restart: unless-stopped
     environment:
-      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-password}
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-azerty}
     volumes:
       - neo4j_data:/data
       - neo4j_logs:/logs

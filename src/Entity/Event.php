@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\FamilyTreeRepository;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FamilyTreeRepository::class)]
+#[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ApiResource]
-class FamilyTree
+class Event
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,7 +25,10 @@ class FamilyTree
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $is_public = null;
+    private ?\DateTimeImmutable $event_date = null;
+    
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $location = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -34,23 +37,21 @@ class FamilyTree
     private ?\DateTimeImmutable $updated_at = null;
 
     /**
-     * @var Collection<int, User>
+     * @var Collection<int, Picture>
      */
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'familyTrees'),
-    ORM\JoinTable(name: 'user_has_family_tree')]
-    private Collection $user;
+    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'event')]
+    private Collection $pictures;
 
-    /**
-     * @var Collection<int, Event>
-     */
-    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'family_tree')]
-    private Collection $events;
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?FamilyTree $family_tree = null;
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
-        $this->events = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -81,14 +82,14 @@ class FamilyTree
         return $this;
     }
 
-    public function isPublic(): ?bool
+    public function getLocation(): ?string
     {
-        return $this->is_public;
+        return $this->location;
     }
 
-    public function setPublic(bool $is_public): static
+    public function setLocation(?string $location): static
     {
-        $this->is_public = $is_public;
+        $this->location = $location;
 
         return $this;
     }
@@ -117,56 +118,56 @@ class FamilyTree
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUser(): Collection
+    public function getEventDate(): ?\DateTimeImmutable
     {
-        return $this->user;
+        return $this->event_date;
     }
 
-    public function addUser(User $user): static
+    public function setEventDate(\DateTimeImmutable $event_date): static
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        $this->user->removeElement($user);
+        $this->event_date = $event_date;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Event>
+     * @return Collection<int, Picture>
      */
-    public function getEvents(): Collection
+    public function getPictures(): Collection
     {
-        return $this->events;
+        return $this->pictures;
     }
 
-    public function addEvent(Event $event): static
+    public function addPicture(Picture $picture): static
     {
-        if (!$this->events->contains($event)) {
-            $this->events->add($event);
-            $event->setFamilyTree($this);
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures->add($picture);
+            $picture->setEvent($this);
         }
 
         return $this;
     }
 
-    public function removeEvent(Event $event): static
+    public function removePicture(Picture $picture): static
     {
-        if ($this->events->removeElement($event)) {
+        if ($this->pictures->removeElement($picture)) {
             // set the owning side to null (unless already changed)
-            if ($event->getFamilyTree() === $this) {
-                $event->setFamilyTree(null);
+            if ($picture->getEvent() === $this) {
+                $picture->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFamilyTree(): ?FamilyTree
+    {
+        return $this->family_tree;
+    }
+
+    public function setFamilyTree(?FamilyTree $family_tree): static
+    {
+        $this->family_tree = $family_tree;
 
         return $this;
     }
