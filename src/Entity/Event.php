@@ -42,10 +42,6 @@ class Event
     #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'event')]
     private Collection $pictures;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?FamilyTree $family_tree = null;
-
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
@@ -160,15 +156,4 @@ class Event
         return $this;
     }
 
-    public function getFamilyTree(): ?FamilyTree
-    {
-        return $this->family_tree;
-    }
-
-    public function setFamilyTree(?FamilyTree $family_tree): static
-    {
-        $this->family_tree = $family_tree;
-
-        return $this;
-    }
 }
