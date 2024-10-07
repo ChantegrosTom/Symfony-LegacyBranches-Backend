@@ -40,24 +40,34 @@ services:
     ports:
       - 8080:80
       
-  neo4j:
-    image: neo4j:5.12
-    restart: unless-stopped
-    environment:
-      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-azerty}
-    volumes:
-      - neo4j_data:/data
-      - neo4j_logs:/logs
-      - neo4j_import:/var/lib/neo4j/import
-      - neo4j_plugins:/var/lib/neo4j/plugins
-    ports:
-      - 7474:7474  # HTTP Neo4j
-      - 7687:7687  # Bolt Protocol Neo4j
+  #neo4j:
+   # image: neo4j:5.12
+    #restart: unless-stopped
+    #environment:
+    #  NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-azerty}
+    #volumes:
+    #  - neo4j_data:/data
+    #  - neo4j_logs:/logs
+    #  - neo4j_import:/var/lib/neo4j/import
+    #  - neo4j_plugins:/var/lib/neo4j/plugins
+    #ports:
+    #  - 7474:7474  # HTTP Neo4j
+    #  - 7687:7687  # Bolt Protocol Neo4j
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
  
 ###> doctrine/doctrine-bundle ###
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis_service"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
   mysql:
     image: mysql:${MYSQL_VERSION:-8}
     environment:
@@ -77,14 +87,13 @@ services:
       # - ./docker/db/data:/var/lib/mysql:rw
 ###< doctrine/doctrine-bundle ###
 
- 
 volumes:
   caddy_data:
   caddy_config:
-  neo4j_data:
-  neo4j_logs:
-  neo4j_import:
-  neo4j_plugins:
+  #neo4j_data:
+  #neo4j_logs:
+  #neo4j_import:
+  #neo4j_plugins:
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
  
