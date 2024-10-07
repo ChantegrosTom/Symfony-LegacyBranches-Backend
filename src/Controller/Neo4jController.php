@@ -6,22 +6,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-use Laudis\Neo4j\Authentication\Authenticate;
-use Laudis\Neo4j\ClientBuilder;
+use App\Service\Neo4jService;
+
 
 use Laudis\Neo4j\Contracts\TransactionInterface;
 
 class Neo4jController extends AbstractController
 {
+    private Neo4jService $neo4jService;
+
+    public function __construct(Neo4jService $neo4jService)
+    {
+        $this->neo4jService = $neo4jService;
+    }
+    
+    
     #[Route('/neo4j', name: 'app_neo4j')]
     public function index(): Response
     {
-        $client = ClientBuilder::create()
-            ->withDriver('bolt', 'bolt://neo4j:password@neo4j')
-            ->withDriver('https', 'https://test.com', Authenticate::basic('user', 'password'))
-            ->withDriver('neo4j', 'neo4j://neo4j.test.com?database=my-database', Authenticate::oidc('token'))
-            ->withDefaultDriver('bolt')
-            ->build();
+
+        $client = $this->neo4jService->neo4jBdd();
+
 
             $result = $client->writeTransaction(static function (TransactionInterface $tsx) {
                 // Run your query
@@ -46,10 +51,6 @@ class Neo4jController extends AbstractController
             dd($nodesData);
                 return $nodesData;
             });
-            
-           
-            
-            
 
         return $this->render('neo4j/index.html.twig', [
             'controller_name' => 'Neo4jController',
