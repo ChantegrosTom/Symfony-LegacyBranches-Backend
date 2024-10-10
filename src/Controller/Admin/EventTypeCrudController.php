@@ -2,21 +2,20 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Picture;
+use App\Entity\EventType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 
-class PictureCrudController extends AbstractCrudController
+class EventTypeCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Picture::class;
+        return EventType::class;
     }
 
     
@@ -24,10 +23,8 @@ class PictureCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            AssociationField::new('event'),
-            ImageField::new('name')->setUploadDir('public/uploads/pictures')->setBasePath('uploads/pictures'),
-            TextEditorField::new('description'),
-            DateTimeField::new('created_at'),
+            TextField::new('name'),
+            DateTimeField::new('created_at')->hideOnForm(),
             DateTimeField::new('updated_at'),
         ];
     }

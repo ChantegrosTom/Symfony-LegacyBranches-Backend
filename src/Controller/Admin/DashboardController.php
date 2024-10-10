@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
+use App\Entity\EventType;
+use App\Entity\FamilyMember;
 use App\Entity\FamilyTree;
 use App\Entity\Picture;
 use App\Entity\User;
@@ -47,8 +49,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Family Tree', 'fas fa-tree', FamilyTree::class);
+        yield MenuItem::linkToCrud('Family Member', 'fas fa-people-group', FamilyMember::class);
         yield MenuItem::linkToCrud('Event', 'fas fa-calendar-days', Event::class);
+        yield MenuItem::linkToCrud('Event Type', 'fas fa-calendar-plus', EventType::class);
         yield MenuItem::linkToCrud('Picture', 'fas fa-image', Picture::class);
+
 
     }
 }
