@@ -1,6 +1,7 @@
 api_platform:
-    title: Hello API Platform
-    version: 1.0.0
+    title: API Legacy Branches
+    description: Application de géstion d'Arbre généalogique 
+    version: 0.0.1    
     formats:
         jsonld: ['application/ld+json']
     docs_formats:
