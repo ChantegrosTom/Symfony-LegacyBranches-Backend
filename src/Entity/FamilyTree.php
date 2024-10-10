@@ -18,22 +18,38 @@ class FamilyTree
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     *  Nom de l'arbre généalogique
+     */
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * Description de l'arbre généalogique
+     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    /**
+     * Status de l'arbre généalogique
+     */
     #[ORM\Column]
     private ?bool $is_public = null;
 
+    /**
+     * Date de creation de l'arbre généalogique
+     */
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    /**
+     * Date de modification de l'arbre généalogique
+     */
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
     /**
+     * Collection d'utilisateurs ayant accès à cet arbre généalogique
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'familyTrees'),
@@ -41,11 +57,19 @@ class FamilyTree
     private Collection $user;
 
     /**
+     * Collection des membres de cette arbre généalogique
+     * @var Collection<int, FamilyMember>
+     */
+    #[ORM\OneToMany(targetEntity: FamilyMember::class, mappedBy: 'family_tree')]
+    private Collection $familyMembers;
+
+    /**
      * @var Collection<int, Event>
      */
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->familyMembers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,6 +157,42 @@ class FamilyTree
     public function removeUser(User $user): static
     {
         $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection<int, FamilyMember>
+     */
+    public function getFamilyMembers(): Collection
+    {
+        return $this->familyMembers;
+    }
+
+    
+    public function addFamilyMember(FamilyMember $familyMember): static
+    {
+        if (!$this->familyMembers->contains($familyMember)) {
+            $this->familyMembers->add($familyMember);
+            $familyMember->setFamilyTree($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamilyMember(FamilyMember $familyMember): static
+    {
+        if ($this->familyMembers->removeElement($familyMember)) {
+            // set the owning side to null (unless already changed)
+            if ($familyMember->getFamilyTree() === $this) {
+                $familyMember->setFamilyTree(null);
+            }
+        }
 
         return $this;
     }

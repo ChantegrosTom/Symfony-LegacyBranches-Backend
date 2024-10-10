@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,40 +23,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * Email de l'utilisateur
+     */
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
     /**
+     * Roles de l'utilisateur
      * @var list<string> The user roles
      */
     #[ORM\Column]
     private array $roles = [];
 
     /**
+     * Mot de passe de l'utilisateur
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
 
+    /**
+     * Prénom de l'utilisateur
+     */
     #[ORM\Column(length: 255)]
     private ?string $first_name = null;
 
+    /**
+     * Nom de l'utilisateur
+     */
     #[ORM\Column(length: 255)]
     private ?string $last_name = null;
 
+    /**
+     * Photo de profile de l'utilisateur
+     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $profile_picture = null;
 
+    /**
+     * Status de l'utilisateur
+     */
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $inactive = null;
 
+    /**
+     * Date de creation de l'utilisateur
+     */
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    /**
+     * Date de modification de l'utilisateur
+     */
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
     /**
+     * Collection des arbre généalogique de cet utilisateur
      * @var Collection<int, FamilyTree>
      */
     #[ORM\ManyToMany(targetEntity: FamilyTree::class, mappedBy: 'user')]
