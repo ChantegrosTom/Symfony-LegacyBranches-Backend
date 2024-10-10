@@ -1,51 +1,57 @@
-# Symfony Docker
+# 🌳 Legacy Branches 🌳
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
 
-## Getting Started
+Projet d'etude
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull always -d --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+## ⚙️ Fonctionnalités principales ⚙️
 
-## Features
+- **Creation d'arbre généalogique** : Permet la création d'arbres personnalisés avec des relations familiales.
 
-* Production, development and CI ready
-* Just 1 service by default
-* Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-* [Vulcain](https://vulcain.rocks) support
-* Native [XDebug](docs/xdebug.md) integration
-* Super-readable configuration
+- **Ajout modification et suppression de membre** : Ajoutez, modifiez ou supprimez des membres à votre arbre généalogique.
 
-**Enjoy!**
+- **Ajout d'événement familiale** : Documentez des événements comme des mariages, naissances, décès, etc.
 
-## Docs
+- **Statistique familiale** : Visualisez des statistiques sur la répartition géographique, l'évolution des membres, etc.
 
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
 
-## License
+## 💻 Technologies utilisées
 
-Symfony Docker is available under the MIT License.
+- **🐳[Docker](https://www.docker.com/)**
+- **🌐[Symfony](https://symfony.com/)**
+- **🗄️[MySQL](https://www.mysql.com/fr/)**
+- **🛠️[phpMyAdmin](https://www.phpmyadmin.net/)**
+- **🔗[Doctrine ORM](https://www.doctrine-project.org/projects/doctrine-orm/en/latest/index.html)**
+- **🛡️[ApiPlatform](https://api-platform.com/)** 
 
-## Credits
+## 📇 Gestion de projet
 
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+- **🃏[Trello](https://trello.com/b/gEP4TZSo/bachelor-arbre)**
+
+## 📜 Maquette & mockup
+
+- **✒️[Figma](https://www.figma.com/design/s94yCMd4ss3NUn8ZFSlcPc/LegacyBrancge?node-id=0-1&t=ooYY85UqmrHBh3TY-1)**
+
+## 🛠️ Installation
+
+1 Cloner le projet :
+```bash
+git clone https://github.com/ChantegrosTom/Symfony-LegacyBranches-Backend.git
+```
+2 Construire les conteneurs Docker :
+```bash
+docker compose build
+```
+3 Lancer les conteneurs :
+```bash
+docker compose up 
+```
+4 Commande dans le conteneur php :
+```bash
+coposer install
+```
+
+## 📚 Documentation additionnelle
+Si vous rencontrez des problèmes avec l'installation, consultez la documentation officielle des outils utilisés : **[Symfony Docker](docs/docker.md)**
+
+
